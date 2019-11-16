@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
@@ -53,6 +55,7 @@ public class Cliente implements Serializable{
 	@Column(name = "email", nullable = true, length = 50)
 	private String email;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Reserva> reservas;
 }

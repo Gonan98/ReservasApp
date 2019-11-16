@@ -9,7 +9,6 @@ import com.reservas.app.entities.Cliente;
 
 @Repository
 public interface IClienteRepository extends JpaRepository<Cliente, Integer>{
-
 	public List<Cliente> findByApellidos(String apellidos);
 	public Cliente findByDni(String dni);
 }

@@ -133,17 +133,25 @@ public class ClienteController {
 			return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Actualizar Clientes", notes = "Metodo para actualizar un cliente")
 	@ApiResponses({
 		@ApiResponse(code = 201, message = "Cliente actualizado correctamente"),
 		@ApiResponse(code = 404, message = "Solicitud de actualización inválida")
 	})
-	public ResponseEntity<Cliente> updateCliente(@Valid @RequestBody Cliente cliente){
+	public ResponseEntity<Cliente> updateCliente(
+			@PathVariable("id") 
+			Integer id, 
+			@Valid 
+			@RequestBody 
+			Cliente cliente){
 		try {
+			Optional<Cliente> c = clienteService.findById(id);
+			if(!c.isPresent())
+				return new ResponseEntity<Cliente>(HttpStatus.NOT_FOUND);
+			cliente.setId(id);
 			clienteService.save(cliente);
-			return new ResponseEntity<Cliente>(HttpStatus.OK);
+			return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
